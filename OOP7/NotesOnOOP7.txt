@@ -1,0 +1,48 @@
+######################## Notes on OOP7 project ########################
+
+Base class header file - Shape.h
+-----------------------------------------------------------------------
+* Virtual functions are used because they will be overridden by derived 
+classes.
+* This is an idea in polymorphism.
+* without Virtual, when these functions are used, it always points to 
+the base class version.
+
+    Eg: * When GetName() function is called in the script, if it is an 
+        instance of a Circle class, it will be called the GetName() of 
+        the Cicle class. Circle::GetName - this wouldn't work if virtual 
+        functions are not used.
+
+* Assigning an initial 0 makes the function pure virtual, without an 
+implementation, only provides an interface.
+* These abstract classes cannot be instantiated directly, need to be used
+through derived classes.
+** Derived classes must override these virtual functions, otherwise they 
+also become abstract and wouldn't be able to instantiate.
+
+* Making these functions constant enforces that they cannot make any 
+changes within the function, this woudn't change the status of the object.
+* They can only return information about the object.
+
+
+script main.cpp file
+------------------------------------------------------------------------
+* Static casting part:
+if (shape->GetName() == "Circle") {
+            Circle* c = static_cast<Circle*>(shape);
+            cout << "[Static cast] Radius: " << c->GetRadius() << endl;
+        }
+
+This can go wrong if the wrong type comes through the if condition. i.e.
+if shape != Circle* - shape is not a Circle pointer.
+
+* Dynamic cast manages this at the runtime compilation:
+if (Circle* c = dynamic_cast<Circle*>(shape)) {
+            cout << "[Dynamic cast] Radius: " << c->GetRadius() << endl;
+        }
+
+This asks the question: is the pointer shape points to a Circle obj?
+If yes, it goes in to the if condition and safely returns a Circle*, if 
+not, it returns a nullptr and skips the if condition. This is known as 
+safe down cast.
+* This prevents unwanted crashes within the code.
