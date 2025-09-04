@@ -13,7 +13,7 @@ private:
     double phase;
 
 public:
-    Wave (double freq, double amp = 1.0, double phase = 0.0)
+    Wave (double freq, double amp = 0.25, double phase = 0.0)
     : frequency(freq), amplitude(amp), phase(phase) {}
 
     // Function to generate the wave pattern - A sin(2 pi f t + phi)

@@ -1,60 +1,39 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Main script of the 1-D wave to 2-D cicular wave pattern mapping project
 //
-// This projrct serves the purpose as follows: gets one or more frequencies from the user,
-// supperimpose them into one wave, and wrapps it around a circle. Number of cycles around
-// the loop is also obtained from the user.
+// This is the initial QT version main script of the project
+// Values are hard coded in this version - may have to change this in the future
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+# include "WaveWidget.h"
 # include "Wave.h"
 # include "WaveformGenerator.h"
 # include "CircularMapper.h"
 
+# include <QApplication>
 # include <iostream>
 
 using namespace std;
 
-int main() {
-    WaveformGenerator WGen;     // Waveform generator object
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+    
+    WaveformGenerator Gen;                      // Waveform generator object
+    Gen.AddWaves(Wave(125.0));                    // 2 Hz wave
+    Gen.AddWaves(Wave(62.5));                    // 3 Hz wave
+    Gen.AddWaves(Wave(250.0));
+    Gen.AddWaves(Wave(12.5));
 
-    // Get the number of frequencies that the user has and store it in Nfreq
-    int Nfreq;
-    cout << "Enter the number of frquencies: ";
-    cin >> Nfreq;
+    auto waveform = Gen.Generate(0.1, 500);     // Waveform of 1.0 second duration and 200 samples
 
-    // Get frequencies, add them, and create a single wave using a loop
-    for (int i = 0; i < Nfreq; i++) {
-        double freq;
-        cout << "Enter the frequency " << (i+1) << " : ";
-        cin >> freq;
-        
-        // Add waves using the generator
-        WGen.AddWaves(Wave(freq));
-    }
+    CicularMapper Map;                          // Circular mapper object
+    auto points = Map.MapToCircle(waveform, 1); // Mapping of the waveform - # cycles
 
-    // Get the number of cycles from the user and store it in Cycles
-    int Cycles;
-    cout << "Enter the number of cycles around the loop: ";
-    cin >> Cycles;
+    // Create the widget
+    WaveWidget w(points);                       // WaveWidget object
+    w.resize(400, 400);
+    w.show();
 
-    int Samples = 200;        // Resolution of the waves - hard coded for now.
-    double Duration = 1.0;      // Duration of the wave in seconds - this is also hard coded for now
-
-    // Generate the Waveform using the above Duration and samples
-    auto WaveForm = WGen.Generate(Duration, Samples);
-
-    // Mapping - get the {x, y} points of the circle
-    CicularMapper CMap;     // Circular mapper object
-    auto Points = CMap.MapToCircle(WaveForm, Cycles);
-
-    cout << "-----------------------------------------------------------------\n";
-    cout << "-----------------------Mapped points-----------------------------\n";
-    cout << "-----------------------------------------------------------------\n";
-
-    for (auto& p : Points) {
-        cout << p.first << " , " << p.second << endl;
-    }
-
-    return 0;
+    return app.exec();
 }
