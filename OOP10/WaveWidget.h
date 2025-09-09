@@ -16,6 +16,9 @@ class WaveWidget : public QWidget {
 public:
     explicit WaveWidget(const std::vector<std::pair<double, double>>& pts, QWidget* parent = nullptr);
 
+    // Setter function to add frequency points dynamically
+    void SetPoints(std::vector<std::pair<double, double>>& pts) { points = pts; }
+
 protected: 
     void paintEvent(QPaintEvent* event) override;
 

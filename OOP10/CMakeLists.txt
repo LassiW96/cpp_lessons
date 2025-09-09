@@ -12,9 +12,7 @@ set(CMAKE_AUTORCC ON)
 add_executable(wave_qt
     main.cpp
     WaveWidget.cpp
-    Wave.h
-    WaveformGenerator.h
-    CircularMapper.h
+    MainWindow.cpp
 )
 
 target_link_libraries(wave_qt Qt5::Widgets)
