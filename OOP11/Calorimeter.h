@@ -1,7 +1,9 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Calorimeter class of the simple analyzer project
+// Inherits from the Detector class
 //
 // Functionality:
+//      - Just returns a text to the console
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -12,13 +14,14 @@
 
 class Calorimeter : public Detector {
 public:
+    Calorimeter(const std::string& name) : Detector(name) {}    // Constructor
 
-
-protected:
-
-
-private:
-
+//____________________________________________________________________________________________________
+// ReadData function
+    void ReadData() const override
+    {
+        std::cout << "Reading deposited energy values from the Calorimeter: " << fname << std::endl;
+    }
 };
 
 # endif

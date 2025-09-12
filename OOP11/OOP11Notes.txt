@@ -1,0 +1,46 @@
+############################## Notes on OOP11 project ##################################
+
+- Ideas and reasons for using reference members inside classes are also explained here
+- More on inheritance and polymorphism
+
+############################## Detector.h ##############################################
+
+- Constructor : Detector(const std::string& name) : fname(name) {}
+    * Here the constructor takes a reference to the created instance
+    * Then stores a copy of the "name" in the member variable fname
+    * Following things happen when an instance is created:
+        * Get the instance, Detector d("MyDet1");
+        * When we use a reference parameter in the constructor (const std::string& name) 
+        as in the above case, it doesn't creat a seperate copy of the temporary "MyDet1"
+        * The temporary is directly bound to name
+        * Then in the initializer list, fname(name), makes a copy of this in to the member
+
+        * If we use a parameter without a reference (const std::string name), the case is 
+        different
+
+- ReadData method
+    * This is just a virtual, void method to return a text to the console
+    * This should be overridden by derived classes (polymorphism), according to the detector 
+    type
+
+- GetName method is a function to obtain the name of the correspondin detector
+    * By making the GetName function in the safer version that it already defined; 
+    const std::string& GetName() const ; you can protect data (encapsulation)
+    * const std::string&:
+    * By making this method constant, the caller cannot modify the name after the instance
+    creation, you cannot do as follows:
+        Detector d("S1");
+        auto& name = d.GetName();
+        name[0] = 'X';   // ❌ won’t compile (const prevents modification)
+
+    * if the first const is not there, the caller can modify the name of the detector, 
+    and it's dangerous
+
+    * The reference (string&) points the output to the internal object without making a copy
+
+    * The last const makes sure not to modify any members of the object
+        * By this way you can even call constant objects as follows: 
+        const Detector d("S1");
+        std::cout << d.GetName(); // works because GetName() is const
+
+
